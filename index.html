@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+      animals: generateLargeFacts(animalFacts, 'animals'),
+      space: generateLargeFacts(spaceFacts, 'space'),
+      history: generateLargeFacts(historyFacts, 'history'),
+      technology: generateLargeFacts(technologyFacts, 'technology'),
+      ocean: generateLargeFacts(oceanFacts, 'ocean')
+    };
+
+    const totalFacts = Object.values(facts)
+      .reduce((total, arr) => total + arr.length, 0);
+
+    document.getElementById('factCount').innerText = totalFacts + '+';
+
+    function generateFact() {
+      const categoryFacts = facts[currentCategory];
+
+      const randomIndex = Math.floor(
+        Math.random() * categoryFacts.length
+      );
+
+      const fact = categoryFacts[randomIndex];
+
+      const factText = document.getElementById('factText');
+
+      factText.style.opacity = 0;
+
+      setTimeout(() => {
+        factText.innerText = fact;
+        factText.style.opacity = 1;
+      }, 200);
+    }
+
+    function copyFact() {
+      const fact = document.getElementById('factText').innerText;
+
+      navigator.clipboard.writeText(fact);
+
+      alert('Fact copied successfully!');
+    }
+
+    function speakFact() {
+      const fact = document.getElementById('factText').innerText;
+
+      const speech = new SpeechSynthesisUtterance(fact);
+
+      speechSynthesis.speak(speech);
+    }
+
+    async function shareFact() {
+      const fact = document.getElementById('factText').innerText;
+
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Amazing Fact',
+          text: fact,
+        });
+      } else {
+        alert('Sharing not supported on this browser.');
+      }
+    }
+
+  </script>
+
+</body>
+</html>
